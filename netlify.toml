@@ -1,0 +1,7 @@
+[build]
+  command = "pip install --upgrade pip setuptools wheel && pip install -r requirements.txt"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+  PIP_NO_DEPS = "false"
+  PIP_BREAK_SYSTEM_PACKAGES = "1"
