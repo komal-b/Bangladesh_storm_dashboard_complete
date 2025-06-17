@@ -225,7 +225,6 @@ class StormRiskDashboard {
                 <span><strong>Severity Level:</strong> ${props.storm_risk_score || 0} <span class="risk-badge risk-${props.storm_risk_score || 0}">${this.getRiskLabel(props.storm_risk_score || 0)}</span></span>
                 <span><strong>Health Facilities:</strong> ${props.health_facility_count || 0}</span>
                 <span><strong>Education Facilities:</strong> ${props.education_facility_count || 0}</span>
-                <span><strong>Hospital Density:</strong> ${props.hospital_density_class || 'Low'}</span>
                 <span><strong>Children Under 5:</strong> ${props.children_under_five?.toLocaleString() || 0}</span>
             </div>
         `;
@@ -242,7 +241,6 @@ class StormRiskDashboard {
             <p><strong>Risk Level:</strong> ${this.getRiskLabel(props.storm_risk_score || 0)}</p>
             <p><strong>Health Facilities:</strong> ${props.health_facility_count || 0}</p>
             <p><strong>Education Facilities:</strong> ${props.education_facility_count || 0}</p>
-            <p><strong>Hospital Density:</strong> ${props.hospital_density_class || 'Low'}</p>
             <p><strong>Children Under 5:</strong> ${props.children_under_five?.toLocaleString() || 0}</p>
         `;
     }
@@ -304,6 +302,12 @@ class StormRiskDashboard {
                 this.map.removeLayer(this.layers.educationFacilities);
             }
         });
+
+        // Export Data button event
+        const exportBtn = document.getElementById('export-data-btn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => this.exportSubdistrictDataCSV());
+        }
     }
 
     hideLoading() {
@@ -322,6 +326,59 @@ class StormRiskDashboard {
                 <p>${message}</p>
             </div>
         `;
+    }
+
+    exportSubdistrictDataCSV() {
+        // Map risk_level to a sort order
+        const riskOrder = {
+            'Very High': 5,
+            'High': 4,
+            'Medium': 3,
+            'Low': 2,
+            'Very Low': 1,
+            'No Risk': 0
+        };
+        // Prepare rows: one per subdistrict in GeoJSON
+        const seenSubdistricts = new Set();
+        const rows = this.data.bangladesh.features.map(f => {
+            const props = f.properties;
+            const subdistrict = props.NAME_4;
+            if (seenSubdistricts.has(subdistrict)) return null; // skip duplicate
+            seenSubdistricts.add(subdistrict);
+            return {
+                'District Name': props.NAME_2,
+                'Sub-district/Upazila': subdistrict,
+                'Number of children under 5': Math.round(props.children_under_five || 0),
+                'Count of Health Facilities': props.health_facility_count || 0,
+                'Count of Education Facilities': props.education_facility_count || 0,
+                'Severity Level': props.risk_level || ''
+            };
+        }).filter(Boolean);
+        // Sort rows by severity level (highest to lowest)
+        rows.sort((a, b) => (riskOrder[b['Severity Level']] || 0) - (riskOrder[a['Severity Level']] || 0));
+        // CSV header
+        const header = [
+            'District Name',
+            'Sub-district/Upazila',
+            'Number of children under 5',
+            'Count of Health Facilities',
+            'Count of Education Facilities',
+            'Severity Level'
+        ];
+        // Convert to CSV string
+        const csv = [header.join(',')].concat(
+            rows.map(row => header.map(h => '"' + String(row[h]).replace(/"/g, '""') + '"').join(','))
+        ).join('\n');
+        // Download
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bangladesh_subdistricts_export.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 }
 

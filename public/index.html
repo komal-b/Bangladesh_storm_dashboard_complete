@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bangladesh Storm Risk Dashboard</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <i class="fas fa-shield-alt"></i>
+                    <h1>Bangladesh Storm Risk Dashboard</h1>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-value" id="total-districts">-</span>
+                        <span class="stat-label">Total Districts</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="high-risk-districts">-</span>
+                        <span class="stat-label">High Risk Districts</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="total-health">-</span>
+                        <span class="stat-label">Health Facilities</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" id="total-education">-</span>
+                        <span class="stat-label">Education Facilities</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Sidebar Controls -->
+            <aside class="sidebar">
+                <div class="control-panel">
+                    <h3><i class="fas fa-layer-group"></i> Map Layers</h3>
+                    <div class="layer-controls">
+                        <label class="layer-toggle">
+                            <input type="checkbox" id="storm-track" checked>
+                            <span class="checkmark"></span>
+                            <span class="layer-name">Amphan Storm Track</span>
+                        </label>
+                        <label class="layer-toggle">
+                            <input type="checkbox" id="health-facilities" checked>
+                            <span class="checkmark"></span>
+                            <span class="layer-name">Health Facilities</span>
+                        </label>
+                        <label class="layer-toggle">
+                            <input type="checkbox" id="education-facilities" checked>
+                            <span class="checkmark"></span>
+                            <span class="layer-name">Education Facilities</span>
+                        </label>
+                    </div>
+
+                    <h3><i class="fas fa-filter"></i> Severity Classification</h3>
+                    <div class="risk-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #d73027;"></div>
+                            <span>Very High Risk (5)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #fc8d59;"></div>
+                            <span>High Risk (4)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #fee08b;"></div>
+                            <span>Medium Risk (3)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #e0f3f8;"></div>
+                            <span>Low Risk (2)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #91bfdb;"></div>
+                            <span>Very Low Risk (1)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #f0f0f0;"></div>
+                            <span>No Risk (0)</span>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-hospital"></i> Hospital Density</h3>
+                    <div class="density-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #2166ac;"></div>
+                            <span>High Density</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #762a83;"></div>
+                            <span>Medium Density</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #c2a5cf;"></div>
+                            <span>Low Density</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-panel">
+                    <h3><i class="fas fa-info-circle"></i> Selected District</h3>
+                    <div id="district-info">
+                        <p>Click on a district to view details</p>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-loading" id="map-loading">
+                    <div class="loading-spinner"></div>
+                    <p>Loading map data...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
+

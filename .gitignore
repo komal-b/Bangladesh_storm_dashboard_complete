@@ -40,7 +40,6 @@ flask_session/
 
 # Project specific
 *.log
-*.pkl
 .env.local
 .env.development.local
 .env.test.local
@@ -70,4 +69,3 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg 
-bgd_children_under_five_2020.csv

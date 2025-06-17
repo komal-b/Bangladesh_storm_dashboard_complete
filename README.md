@@ -1,13 +1,12 @@
-# Bangladesh Storm Risk Dashboard
+# Mosam: Monitoring and Observation for Storm Assessment and Mobilization (Bangladesh)
 
-A comprehensive web-based dashboard for assessing storm risk to health and education facilities in Bangladesh at the sub-district level.
+A comprehensive web-based dashboard for assessing storm risk to children under five in Bangladesh at the sub-district level.
 
 ## Features
 
 - **Interactive Map**: Sub-district level visualization of Bangladesh with storm risk classification
 - **Risk Assessment**: 5-level storm risk scoring based on Cyclone Amphan track and wind intensity
 - **Facility Mapping**: 6,964 health facilities and 7,798 education facilities plotted
-- **Hospital Density Analysis**: Classification of regions by healthcare facility density
 - **Layer Controls**: Toggle visibility of storm track, health facilities, and education facilities
 - **District Information**: Detailed popup information for each sub-district
 
@@ -65,28 +64,17 @@ bangladesh_storm_dashboard/
 - **Storm Track**: Cyclone Amphan 2020 track data with wind speeds
 - **Health Facilities**: OpenStreetMap health facility points
 - **Education Facilities**: OpenStreetMap education facility points
+- **Population Data**: Population density of children under five
 
 ## Risk Classification
 
 ### Storm Risk Levels:
-- **Level 5 (Very High)**: Wind speeds ≥120 mph - Red zones
-- **Level 4 (High)**: Wind speeds 96-119 mph - Orange zones  
-- **Level 3 (Medium)**: Wind speeds 74-95 mph - Yellow zones
-- **Level 2 (Low)**: Wind speeds 39-73 mph - Light blue zones
-- **Level 1 (Very Low)**: Wind speeds <39 mph - Blue zones
+- **Level 5 (Very High)**: Red zones
+- **Level 4 (High)**: Orange zones  
+- **Level 3 (Medium)**: Yellow zones
+- **Level 2 (Low)**: Light blue zones
+- **Level 1 (Very Low)**: White zones
 - **Level 0 (No Risk)**: Areas outside storm impact - Gray zones
-
-### Hospital Density:
-- **High**: Above 150% of mean facility count
-- **Medium**: Above mean facility count
-- **Low**: Below mean facility count
-
-## Deployment
-
-For production deployment, consider using:
-- **Gunicorn** as WSGI server: `gunicorn -w 4 -b 0.0.0.0:5000 app:app`
-- **Nginx** as reverse proxy
-- **Docker** for containerization
 
 ## Technical Details
 

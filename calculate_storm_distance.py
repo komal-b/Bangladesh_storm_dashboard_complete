@@ -26,12 +26,12 @@ def calculate_storm_distances():
         crs='EPSG:4326'
     ).to_crs(epsg=32645)
     
-    # Calculate centroids in UTM projection
-    bangladesh_utm['district_center'] = bangladesh_utm.geometry.centroid
+    # Calculate centroids in UTM projection for each sub-district
+    bangladesh_utm['subdistrict_center'] = bangladesh_utm.geometry.centroid
     
     # Calculate distances in kilometers
     distances = []
-    for center in bangladesh_utm['district_center']:
+    for center in bangladesh_utm['subdistrict_center']:
         # Calculate distance and convert to km
         dist = center.distance(storm_track_utm.geometry[0]) / 1000
         distances.append(dist)
@@ -60,7 +60,7 @@ def calculate_storm_distances():
     print("\nDistance Classification Distribution:")
     print(bangladesh_gdf['storm_distance_class'].value_counts())
     
-    print("\nTop 5 Closest Districts to Storm Track:")
+    print("\nTop 5 Closest Sub-districts to Storm Track:")
     cols = ['NAME_4', 'distance_to_storm_km', 'storm_distance_class']
     print(
         bangladesh_gdf[cols]

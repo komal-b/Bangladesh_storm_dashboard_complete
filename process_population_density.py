@@ -16,9 +16,9 @@ def process_population_by_district():
         chunksize=chunk_size
     )
     
-    # Dictionary to store district-wise population
-    district_population = {
-        district: 0 for district in bangladesh_gdf['NAME_2'].unique()
+    # Dictionary to store sub-district-wise population
+    subdistrict_population = {
+        subdistrict: 0 for subdistrict in bangladesh_gdf['NAME_4'].unique()
     }
     
     chunk_count = 0
@@ -37,7 +37,7 @@ def process_population_by_district():
             crs="EPSG:4326"
         )
         
-        # Spatial join with districts
+        # Spatial join with sub-districts
         joined = gpd.sjoin(
             chunk_gdf, 
             bangladesh_gdf, 
@@ -45,19 +45,19 @@ def process_population_by_district():
             predicate='within'
         )
         
-        # Sum population by district
+        # Sum population by sub-district
         pop_col = 'bgd_children_under_five_2020'
-        district_sums = joined.groupby('NAME_2')[pop_col].sum()
+        subdistrict_sums = joined.groupby('NAME_4')[pop_col].sum()
         
-        # Update the district population dictionary
-        for district, pop in district_sums.items():
-            if district in district_population:
-                district_population[district] += pop
+        # Update the sub-district population dictionary
+        for subdistrict, pop in subdistrict_sums.items():
+            if subdistrict in subdistrict_population:
+                subdistrict_population[subdistrict] += pop
 
-    print("Adding population data to districts...")
+    print("Adding population data to sub-districts...")
     # Add the population data to the bangladesh_gdf
-    bangladesh_gdf['children_under_five'] = bangladesh_gdf['NAME_2'].map(
-        district_population
+    bangladesh_gdf['children_under_five'] = bangladesh_gdf['NAME_4'].map(
+        subdistrict_population
     ).round().astype(int)
 
     # Calculate area in square kilometers
@@ -76,11 +76,11 @@ def process_population_by_district():
     bangladesh_gdf.to_file(output_file, driver="GeoJSON")
     
     # Print summary statistics
-    print("\nDistrict-level Children Population Summary:")
-    summary_cols = ['NAME_2', 'children_under_five', 'children_density_km2']
+    print("\nSub-district-level Children Population Summary:")
+    summary_cols = ['NAME_4', 'children_under_five', 'children_density_km2']
     print(bangladesh_gdf[summary_cols].describe())
     
-    print("\nTop 5 Districts by Children Population Density:")
+    print("\nTop 5 Sub-districts by Children Population Density:")
     print(
         bangladesh_gdf[summary_cols]
         .sort_values('children_density_km2', ascending=False)

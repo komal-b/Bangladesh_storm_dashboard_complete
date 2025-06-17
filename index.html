@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bangladesh Storm Risk Dashboard</title>
+    <title>Mosam: Bangladesh Storm Dashboard</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -16,16 +16,16 @@
             <div class="header-content">
                 <div class="logo-section">
                     <i class="fas fa-shield-alt"></i>
-                    <h1>Bangladesh Storm Risk Dashboard</h1>
+                    <h1>Mosam: Bangladesh Storm Dashboard</h1>
                 </div>
                 <div class="header-stats">
                     <div class="stat-card">
                         <span class="stat-value" id="total-districts">-</span>
-                        <span class="stat-label">Total Districts</span>
+                        <span class="stat-label">Total Subdistricts</span>
                     </div>
                     <div class="stat-card">
                         <span class="stat-value" id="high-risk-districts">-</span>
-                        <span class="stat-label">High Risk Districts</span>
+                        <span class="stat-label">High Risk Subdistricts</span>
                     </div>
                     <div class="stat-card">
                         <span class="stat-value" id="total-health">-</span>
@@ -44,6 +44,7 @@
             <!-- Sidebar Controls -->
             <aside class="sidebar">
                 <div class="control-panel">
+                    <button id="export-data-btn" class="export-btn"><i class="fas fa-download"></i> Export Data</button>
                     <h3><i class="fas fa-layer-group"></i> Map Layers</h3>
                     <div class="layer-controls">
                         <label class="layer-toggle">
@@ -88,22 +89,6 @@
                         <div class="legend-item">
                             <div class="legend-color" style="background: #f0f0f0;"></div>
                             <span>No Risk (0)</span>
-                        </div>
-                    </div>
-
-                    <h3><i class="fas fa-hospital"></i> Hospital Density</h3>
-                    <div class="density-legend">
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #2166ac;"></div>
-                            <span>High Density</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #762a83;"></div>
-                            <span>Medium Density</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color" style="background: #c2a5cf;"></div>
-                            <span>Low Density</span>
                         </div>
                     </div>
                 </div>

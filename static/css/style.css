@@ -48,9 +48,10 @@ body {
 }
 
 .logo-section h1 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #2d3748;
+    white-space: nowrap;
 }
 
 .header-stats {
